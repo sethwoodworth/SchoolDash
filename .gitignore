@@ -1,0 +1,10 @@
+# Ignore these filetypes
+*.pyc
+*.swp
+*.sqlite
+
+# Ignore these folder
+data/*
+
+# Ignore these specific files
+schooldash/local_settings.py
