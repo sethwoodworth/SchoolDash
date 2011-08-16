@@ -1,7 +1,17 @@
 import random
+from django.shortcuts import render_to_response
 from dataload.models import *
 
-def real_grade(request):
+### Utilities ###
+def w_choice(lst):
+    n = random.uniform(0, 1)
+    for item, weight in lst:
+        if n < weight:
+            break
+        n = n - weight
+    return item
+
+def show_all(request):
     students = Demographics.objects.all()
     students_all = []
     graphs = {'mcasxy': [], 'languages': [], 'iep': [], 'frl': []}
@@ -78,7 +88,7 @@ def real_grade(request):
     values['tardies'] = [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 4, 5, 9]
     values['ward'] = [0, 1, 2, 3, 4, 5, 6, 7]
 
-    return render_to_response('display/real_admin.html', {
+    return render_to_response('student_list.html', {
         'students': students, 
         'students_all': students_all, 
         'generated_values': values, 

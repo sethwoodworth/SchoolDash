@@ -8,7 +8,6 @@ from django.conf import settings
 from dataload.views import load_demographics
 from datashow.views import show_all
 
-
 urlpatterns = patterns('',
     # pro forma
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

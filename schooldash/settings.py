@@ -13,13 +13,12 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'local.db',
+        'NAME': 'local.sqlite3',
     }
 }
 
 TIME_ZONE = 'America/Detroit'
 LANGUAGE_CODE = 'en-us'
-
 SITE_ID = 1
 USE_I18N = False
 USE_L10N = True
@@ -74,7 +73,7 @@ TEMPLATE_DIRS = (
 
 ## ---- start: Userena ---- ##
 
-AUTH_PROFILE_MODULE = 'usering.UseringProfile'
+AUTH_PROFILE_MODULE = 'userinfo.UserProfile'
 ANONYMOUS_USER_ID   = -1
 LOGIN_REDIRECT_URL  = '/dash/'
 USERENA_SIGNIN_REDIRECT_URL = '/dash/'
@@ -108,7 +107,11 @@ INSTALLED_APPS = (
     # Our apps
     'dataload',
     'datashow',
+    'userinfo',
 )
+
+# Folder location of the csv files of student data
+DATA_DIR = os.path.join(os.path.dirname(__file__), '../data/')
 
 try:
     from local_settings import *
