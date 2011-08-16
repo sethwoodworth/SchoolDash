@@ -1,0 +1,339 @@
+{% extends '_base.html' %}
+
+{% block pagetitle %}{% endblock %}
+{% block title %}{% endblock %}
+
+{% block javascript_extra %}
+  <script type="text/javascript" src="/static/js/flot/jquery.flot.js"></script>
+{% endblock %}
+
+{% block primary %}
+<div id="section" class="grid_16 section alpha">
+
+  <div class="grid_16 menu_head alpha">
+    <a name="grade X" style="text-decoration:none;"><h2 class="prefix_1">Arthur D. Healey School</h2></a>
+  </div> <!-- grid_16 -->
+
+  <div class="contents">
+    <table class="grid_16 spreadsheet tablesorter" style='margin-left:0px;'>
+      <thead><tr>
+        <th>Name</th>
+        <th>G</th>
+        <th>Grade</th>
+        <th>Homeroom</th>
+        <th><span title="Days Absent this Quarter">Abs</span></th>
+        <th><span title="Days Tardy this Quarter">Tardy</span></th>
+        <th>Home Language</th>
+        <th> <span title="English Language Fluency">Fluency</span></th>
+        <th>
+          <span title="Years at the Healey">
+          Y @ H
+          </span>
+        </th>
+        <th> <span title="">
+            DIEBELS
+        </span> </th>
+        <th> <span title="Change since the last time the test was taken">
+          MCAS Math
+        </span> </th>
+        <th> <span title="Change since the last time the test was taken">
+          MCAS ELA
+        </span> </th>
+        <th>Ward</th>
+        <th>FRL</th>
+        <th>IEP</th>
+        <th> <span title="Massachusetts English Proficiency Assessment">
+          MEPA
+        </th>
+        <th> <span title="What afterschool programs?">
+          Afterschool
+        </span> </th>
+      </tr></thead>
+      <tbody>
+        {% for student in students_all %}
+        <tr>
+          <td>{{ student.data.lname }}, {% if student.data.mname == '\N' %}{% else %} {{ student.data.mname|first }}.{% endif %} {{ student.data.fname }}</td>
+          <td>
+            {% if student.data.gender == 'F' %}♀ {# &#9792; #}
+            {% else %}♂ {# &#9794; #}
+            {% endif %}
+          </td>
+          <td>{{ student.data.grade_level }}</td>
+          <td>{{ student.data.homeroom }}</td>
+          <td class="
+            {% if student.data.attendance > 9 %} warn {% endif %}
+            ">
+            {{ student.data.attendance }}
+          </td>
+          <td class="
+            {% if student.tardy > 9 %} warn {% endif %}
+            ">
+            <span title="Randomly generated data.">
+            {{ generated_values.tardies|random }}
+            </span>
+          </td>
+          <td class="
+              {% if student.data.home_lang == 'Spanish' %}          teal  {% endif %}
+              {% if student.data.home_lang == 'Portuguese' %}       dblue {% endif %}
+              {% if student.data.home_lang == 'English' %}          purp  {% endif %}
+              {% if student.data.home_lang == 'Creole(Haitian)' %}  brown {% endif %}
+              ">
+            {{ student.data.home_lang }}
+          </td>
+          {# Language Level #}
+          {# TODO: Provide codes for FLEP levels #}
+          <td class=" " > {{ student.data.lang_level }} </td>
+          <td> <span 
+            title="Has been at the Healey for {{ student.data.years_at }} years.  Enrolled {{ student.data.entry_date }} {% if student.data.exit_date %} Withdrawn {{ student.data.exit_date }} with code {{ student.data.widrawl }} {% endif %}"
+            >
+                {{ student.data.years_at }}
+            </span>
+          </td>
+          <td> {# DIEBELS test #}
+            {% if student.tests.diebels %}
+            <span title="2 most recent DIEBELS test results {{ student.tests.diebels.1.result }} to {{ student.tests.diebels.0.result }}">
+            {{ student.tests.diebels.1.result|first }} > {{ student.tests.diebels.0.result|first }}
+            </span>
+            {% endif %}
+          </td>
+          {# MCAS Math scores #}
+          <td class=" ">
+            {{ student.tests.math.0.raw_score }}
+            {% if student.tests.math.1.raw_score %}
+              ( {{ student.tests.math.1.raw_score }} )
+            {% endif %}
+
+          </td>
+
+          {# MCAS Reading scores #}
+          <td class=" ">
+            {{ student.tests.ela.0.raw_score }}
+          </td>
+
+          {# Ward #}
+          <td>{{ generated_values.ward|random }}</td>
+
+          {# FRL #}
+          <td>
+          {% if student.data.frl == "Not Eligible" %}
+            Not
+          {% endif %}
+          {% if student.data.frl == "Free Lunch" %}
+            Free
+          {% endif %}
+          {% if student.data.frl == "" %}
+            Reduced
+          {% endif %}
+          </td>
+
+          {# IEP #}
+          <td class="
+              {% if student.iep %}#ddd;{% endif %}
+              {% if not student.iep %}#eee;{% endif %}
+            ">
+            {% if student.data.iep == '\N' %}
+            {% else %}
+              {{ student.data.iep }}
+            {% endif %}
+          </td>
+
+          {# MEPA #}
+          {# TODO: generate fake MEPA data #}
+          <td class="
+          {% if student.data.lang_level == "Fluent" %}
+            ">
+          {% else %}
+          <!-- if Ell, MEPA -->
+              {% if student.generated.mepa_r %}
+                {% if student.generated.mepa_r < 11 %} warn {% endif %}
+                {% if student.generated.mepa_w < 11 %} warn {% endif %}
+              {% endif %}
+            ">
+            {% if student.generated.mepa_r %}
+              <span title="Randomly generated data: MEPA Reading Score of {{ student.generated.mepa_r }} / 30">
+                R{{ student.generated.mepa_r }}
+              </span>
+               /
+              <span title="Randomly generated data: MEPA Writing Score of {{ student.generated.mepa_w }} / 30">
+                W{{ student.generated.mepa_w }}
+              </span>
+            {% endif %}
+          {% endif %}
+          </td>
+
+          {# Afterschool programs #}
+          <td>
+            <span title="Randomly generated data.">
+            {% for program in student.generated.afterschool %}
+              {{ program }}
+            {% endfor %}
+            </span>
+          </td>
+
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Start graph section -->
+  <script type="text/javascript">
+
+      mcasd = [
+        { data: 
+          {% autoescape off %}
+              {{ graphs.mcasxy }}
+          {% endautoescape %}
+         , points: { symbol: "circle" }
+         }];
+
+      mcaso = {
+        series: { points: { show: true, radius: 3 } },
+        axis: {
+            xaxis:{
+                label:'MCAS ELA',
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+                },
+            yaxis:{
+                label:'MCAS Math',
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+                },
+            }
+      };
+
+      lang_data = [
+          {data: [
+          {% for key,value in graphs.languages.items %}
+            [{{ forloop.counter }}, '{{ value }}'],
+          {% endfor %}
+          ]}
+        ];
+
+      lang_options = {
+        series: {
+          bars:  {
+            show:      true,
+            barWidth:  0.9,
+            align:     'center',
+          },},
+        xaxis: {
+          ticks: [
+          {% for key,value in graphs.languages.items %}
+            [{{ forloop.counter }}, '{{ key }}'],
+          {% endfor %}
+          ]}
+      };
+
+      iep_data = [
+          {data: [
+          {% for key,value in graphs.iep.items %}
+            [{{ forloop.counter }}, {{ value }}],
+          {% endfor %}
+          ]}
+        ];
+
+      iep_options = {
+        series: {
+          bars:  {
+            show:      true,
+            barWidth:  0.9,
+            align:     'center',
+          },},
+        xaxis: {
+          ticks: [
+          {% for key,value in graphs.iep.items %}
+            [{{ forloop.counter }}, '{{ key }}'],
+          {% endfor %}
+          ]}
+      };
+
+
+      frl_data = [
+          {data: [
+          {% for key,value in graphs.frl.items %}
+            {% if value in frl_options %}
+                [{{ forloop.counter }}, {{ value }}],
+            {% else %}
+                [{{ forloop.counter }}, "None"],
+            {% endif %}
+          {% endfor %}
+          ]}
+        ];
+
+      frl_options = {
+        series: {
+          bars:  {
+            show:      true,
+            barWidth:  0.9,
+            align:     'center',
+          },},
+        xaxis: {
+          ticks: [
+          {% for key,value in graphs.frl.items %}
+            [{{ forloop.counter }}, '{{ key }}'],
+          {% endfor %}
+          ]}
+      };
+
+
+    $(function () {
+      $.plot($("#placeholder"),  mcasd, mcaso);
+    });
+  </script>
+</div> <!-- contents -->
+
+<div id="graphs" class="grid_16">
+
+  <div id="buttons" class="grid_3">
+    <ul>
+      <li>
+        <script type="text/javascript">
+          function clear_graph() {
+            $.plot($('#placeholder'), [])
+          };
+        </script>
+        <a href="#clear" onclick="clear_graph()">clear</a>
+      </li>
+      <li>
+        <script type="text/javascript">
+          function lang_graph() {
+            $.plot($("#placeholder"),  lang_data, lang_options);
+          };
+        </script>
+        <a href="#language" onclick="lang_graph()">language</a>
+      </li>
+      <li>
+        <script type="text/javascript">
+          function mcas_graph() {
+            $.plot($('#placeholder'), mcasd, mcaso)
+          };
+        </script>
+        <a href="#mcas" onclick="mcas_graph()">MCAS: Math x ELA</a>
+      </li>
+      <li>
+        <script type="text/javascript">
+          function iep_graph() {
+            $.plot($('#placeholder'), iep_data, lang_options)
+          };
+        </script>
+        <a href="#iep" onclick="iep_graph()">Graph IEP</a>
+      </li>
+      <li>
+        <script type="text/javascript">
+          function frl_graph() {
+            $.plot($('#placeholder'), frl_data, lang_options)
+          };
+        </script>
+        <a href="#frl" onclick="frl_graph()">Graph FRL</a>
+      </li>
+  </div>
+
+  <div class="jqplot-xaxis-label"></div>
+  <div id="placeholder" class="grid_10 prefix_1" style='height:600px; width:900px;'></div>
+  <!-- End graph section -->
+</div> <!-- graphs -->
+<div class="jqplot-yaxis-label"></div>
+
+
+</div> <!-- #section -->
+
+{% endblock %}

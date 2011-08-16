@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <title>OneVille - {% block pagetitle %}{% endblock %}</title>
+
+  <!-- Style Section -->
+  <link rel="stylesheet" href="/static/style.css" type="text/css" media="screen, projection" />
+
+  <!-- Script Section -->
+  <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="/static/js/excanvas.js"></script><![endif]-->
+  <script src="/static/js/jquery-1.5.1.js" type="text/javascript"></script>
+  <script src="/static/js/jquery.tablesorter.min.js" type="text/javascript"></script>
+  <script language="javascript" type="text/javascript" src="/static/js/jquery.jqplot.min.js"></script>
+  <script language="javascript" type="text/javascript" src="/static/js/plugins/jqplot.canvasTextRenderer.min.js"></script>
+  <script language="javascript" type="text/javascript" src="/static/js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function() 
+    { $(".spreadsheet").tablesorter(); } 
+  ); 
+  </script>
+  {% block javascript_extra %}
+  {% endblock %}
+
+</head>
+
+<body>
+<div id="wrapper">
+  <div id="bg" class="container container_16 ">
+
+    <div id="header" class="grid_16 shady" style="background-color: #fff">
+      <h1>OneVille Admin Dashboard</h1>
+      <div id="nav">
+        <div id="menu">
+          <span class="lang work"><a class="work" href="/dashboard/grade/">Home</a></span>
+          <span class="lang play"><a class="play" href="/dashboard/student/fake">Student Example</a></span>
+          <span class="lang libre"><a class="libre" href="/pstp/">Planning</a></span>
+        </div><!-- #menu -->
+      </div> <!-- #nav -->
+    </div> <!-- #header -->
+
+    <div id="content" class="grid_16 shady" style="background-color: #fff">
+      <h2>{% block title %}{% endblock %}</h2>
+      {% block primary %}
+      {% endblock %}
+    </div> <!-- #content .grid_12 -->
+
+  </div> <!-- #bg .container -->
+</div> <!-- wrapper -->
+
+</body>
+</html>
