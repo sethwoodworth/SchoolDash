@@ -1,0 +1,225 @@
+/*
+Title: CSS Master Formatting
+Author: Seth Woodworth, seth@sethish.com
+Copyright:
+  © Harvard Graduate School of Education, 2011
+  © Seth Woodworth, 2011
+
+Released under an AGPL license
+
+Contents:   Master Formatting
+              Resets
+              Body
+              Links
+              Common Elements
+              Formatting Navigation
+            Style
+              Container
+
+Color Guide:
+  Header text:    #F78F1E
+  Dark background:#446677
+  Tagline color:  #A29590
+*/
+
+/* --[ Master Formatting ]---------- */
+/* --[ Resets ]------------ */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;}
+body {line-height:1.5;}
+table {border-collapse:separate;border-spacing:0;}
+caption, th, td {text-align:left;font-weight:normal;}
+table, td, th {vertical-align:middle;}
+blockquote:before, blockquote:after, q:before, q:after {content:"";}
+blockquote, q {quotes:"" "";}
+a img {border:none;}
+
+
+/* --[ Body ]------------ */
+body {
+      padding: 8px 0 0 24px;
+      text-align: left;
+      font-family: verdana, arial, sans-serif;
+      font-size: 76%;
+      line-height: 1.15em;
+      color: #404040;
+}
+
+/* ---[ Links ]------------------------------- */
+a {
+      color: #464646;
+      text-decoration: underline;
+  }
+a:hover {
+      color: #000;
+      text-decoration: underline;
+  }
+
+/* ---[ Common Elements ]------------------------------- */
+div {
+      position: relative;
+      display: block;
+      margin: 0;
+      padding: 0;
+}
+p {
+      font-size: 110%;
+      margin: 0;
+      padding: 3px 0 9px 0;
+      line-height: 1.3em;
+}
+h1 {
+      font-size: 3em;
+      line-height: 1.2em;
+      font-weight: normal;
+      margin: 0;
+      padding: 0;
+      color: #f78f1e;
+}
+h2 {
+      font-size: 260%;
+      font-weight: normal;
+      margin: 0;
+      padding: 0 0 12px 0;
+      color: #f78f1e;
+      line-height: 1.1em;
+      text-transform: lowercase;
+}
+h3 {
+      font-size: 120%;
+      font-weight: normal;
+      margin: 0;
+      padding: 3px 0 9px 0;
+      color: #f78f1e;
+      line-height: 1.1em;
+}
+
+h4, h5 {
+      font-size: 100%;
+      font-weight: normal;
+      margin: 0;
+      padding:0;
+
+}
+h1 a, h2 a, h3 a,
+h1 a:hover, h2 a:hover  {
+      text-decoration: none;
+}
+li {
+      margin: 0 0 5px 0;
+}
+table {
+      font-size: 100%;
+}
+table p {
+      font-size: 100%;
+}
+/* ---[ Formatting Navigation ]------------------------------- */
+
+
+/* --[ Style ]---------- */
+/* --[ Header ]---------- */
+#header {
+  height:     88px;
+  background: #446677;
+  color:      #A29590;
+  }
+#header h1 a {
+  display:    inline;
+  margin:     8px 0 0 18px;
+  color:      #F78F1E;
+  }
+#tagline {
+  font-style: italic;
+  margin:     8px 0 0 19px;
+}
+#header h2 {
+  margin-top: -40px;
+  font-size:  2em;
+  text-align: center;
+}
+ul#navigation {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      float:  right;
+      margin-top: -48px;
+  }
+ul#navigation li {
+      list-style: none;
+      float: left;
+      margin: 0;
+      padding: 0;
+      background-position: 0 0;
+      background-repeat: no-repeat;
+  }
+ul#navigation li a {
+      display:        block;
+      width:          65px;
+      padding-bottom: 3px;
+      font-size:      120%;
+      text-decoration: none;
+      color:          #A29590;
+  }
+ul#navigation li a:hover {
+      text-decoration: underline;
+  }
+
+/* --[ Container ]---------- */
+#container {
+      background: #D8E3E9;
+      margin-left: auto;
+      margin-right: auto;
+      width: 1280px;
+      -moz-box-shadow: 0 8px 15px black;
+      -webkit-box-shadow: 0 8px 15px black;
+      box-shadow: 0 8px 15px black;
+  }
+
+/* --[ Contents ]---------- */
+#content {
+      margin: 5px 10px 0px 10px;
+  }
+#content p {
+      margin: 0px 80px 12px 20px;
+  }
+table, td, th {
+      padding:        4px 5px;
+      font-size:      92%;
+      text-align:     center;
+      vertical-align: middle;
+  }
+table {
+      background: #e6ffe6;
+      -moz-box-shadow: 0 0px 5px black;
+      -webkit-box-shadow: 0 0px 5px black;
+      box-shadow:inset 0px 0px 5px black;
+  }
+#content th {
+  }
+th.header {
+      font-weight: bold;
+      background-image: url(/static/imgs/bg.gif);
+      cursor: pointer;
+      font-weight: bold;
+      background-repeat: no-repeat;
+      background-position: center right;
+      padding-right: 18px;
+      /*border-right: 1px solid #dad9c7;*/
+      margin-left: -1px;
+      text-decoration:  underline;
+  }
+th.headerSortUp {
+      background-image: url(/static/imgs/asc.gif);
+      background-color: #D8E9DA;
+  }
+th.headerSortDown{
+      background-image: url(/static/imgs/desc.gif);
+      background-color: #E9E8D8;
+  }
+th.header {
+      cursor: pointer;
+      font-weight: bold;
+  }
+.left {
+      text-align: left;
+  }
