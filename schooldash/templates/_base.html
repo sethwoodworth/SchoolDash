@@ -12,44 +12,38 @@
 
   <!-- Script Section -->
   <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="/static/js/excanvas.js"></script><![endif]-->
-  <script src="/static/js/jquery-1.5.1.js" type="text/javascript"></script>
-  <script src="/static/js/jquery.tablesorter.min.js" type="text/javascript"></script>
-  <script language="javascript" type="text/javascript" src="/static/js/jquery.jqplot.min.js"></script>
-  <script language="javascript" type="text/javascript" src="/static/js/plugins/jqplot.canvasTextRenderer.min.js"></script>
-  <script language="javascript" type="text/javascript" src="/static/js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
-  <script type="text/javascript">
-  $(document).ready(function() 
-    { $(".spreadsheet").tablesorter(); } 
-  ); 
-  </script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" language="javascript" type="text/javascript"></script>
   {% block javascript_extra %}
   {% endblock %}
 
 </head>
 
 <body>
-<div id="wrapper">
-  <div id="bg" class="container container_16 ">
+<div id="container">
+  <div id="header" >
+    <h1><a href='/' title="SchoolDash Home">SchoolDash</a></h1>
+    <div id='tagline'>At-a-glance education information</div>
+    <ul id="navigation">
+      {% if user and not user.is_anonymous %}
+        <li>Username!</li>
+        <li>logout</li>
+      {% else %}
+        <li><a href="">login</a></li>
+        <li><a href="">about</a></li>
+        <li><a href="">help</a></li>
+      {% endif %}
+    </ul><!-- #user_nav -->
+    <h2>{% block school %}Arthur D. Healey School{% endblock %}</h2>
+  </div> <!-- #header -->
 
-    <div id="header" class="grid_16 shady" style="background-color: #fff">
-      <h1>OneVille Admin Dashboard</h1>
-      <div id="nav">
-        <div id="menu">
-          <span class="lang work"><a class="work" href="/dashboard/grade/">Home</a></span>
-          <span class="lang play"><a class="play" href="/dashboard/student/fake">Student Example</a></span>
-          <span class="lang libre"><a class="libre" href="/pstp/">Planning</a></span>
-        </div><!-- #menu -->
-      </div> <!-- #nav -->
-    </div> <!-- #header -->
+  <div id="content">
+    <h2>{% block title %}{% endblock %}</h2>
+    {% block primary %}
 
-    <div id="content" class="grid_16 shady" style="background-color: #fff">
-      <h2>{% block title %}{% endblock %}</h2>
-      {% block primary %}
-      {% endblock %}
-    </div> <!-- #content .grid_12 -->
+    {% endblock %}
+  </div> <!-- #content  -->
 
-  </div> <!-- #bg .container -->
-</div> <!-- wrapper -->
+</div> <!-- .container -->
 
 </body>
 </html>
