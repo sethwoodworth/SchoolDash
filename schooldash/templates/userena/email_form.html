@@ -1,0 +1,17 @@
+{% extends '_base.html' %}
+{% load i18n %}
+
+{% block content_title %}<h2>{% blocktrans with user.username as username %}Account &raquo; {{ username }}{% endblocktrans %}</h2>{% endblock %}
+
+{% block content %}
+<div id="userena-content-wrapper">
+    <div id="userena-content">
+        <form action="" method="post">
+          {% csrf_token %}
+            <legend>{% trans "Change email address" %}</legend>
+            {{ form.as_p }}
+          <input type="submit" value="{% trans "Change email" %}" />
+        </form>
+    </div>
+</div>
+{% endblock %}

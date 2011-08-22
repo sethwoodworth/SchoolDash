@@ -5,9 +5,6 @@ admin.autodiscover()
 
 from django.conf import settings
 
-from dataload.views import load_demographics
-from datashow.views import show_all
-
 urlpatterns = patterns('',
     # pro forma
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -18,10 +15,12 @@ urlpatterns = patterns('',
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     # userena account urls
     (r'^accounts/', include('userena.urls')),
-
-    # Tmp "Show everything" url
+    # Utility urls
     url(r'^load$', 'schooldash.dataload.views.load_demographics'),
-    url(r'^$', 'schooldash.datashow.views.show_all'),
+    # Application urls
+    (r'^all_demo$', 'schooldash.datashow.views.show_all', {'demo': True}),
+    (r'^all$', 'schooldash.datashow.views.show_all', {'demo': False}),
+    url(r'^class$', 'schooldash.datashow.views.show_class'),
 
     # sort of hacky one-liner to generate a robots.txt (breaks MTV, but w/e)
     (r'^robots\.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: ", mimetype="text/plain")),

@@ -1,0 +1,32 @@
+{% extends '_base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Signup" %} - {% endblock %}
+
+{% block content %}
+<div id="userena-content-wrapper">
+    <div id="userena-content">
+        <form action="" method="post">
+          {% csrf_token %}
+            <p><h2>Signup</p></h2>
+            {% for field in form %}
+            {{ field.errors }}
+            {% comment %} Displaying checkboxes differently {% endcomment %}
+            {% if field.name == 'tos' %}
+            <p class="checkbox">
+            <label for="id_{{ field.name }}">{{ field }} {{ field.label }}</label>
+            </p>
+            {% else %}
+            <p>
+            <div class="fieldWrapper">
+            <div class="formLabel">{{ field.label_tag }}</div> 
+            {{ field }}
+            </div>
+            </p>
+            {% endif %}
+            {% endfor %}
+          <input type="submit" value="Sign up!" />
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends '_base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Signed out" %} - {% endblock %}
+{% block content_title %}<h2>{% trans "You have been signed out" %}.</h2>{% endblock %}
+
+{% block content %}
+<div id="userena-content-wrapper">
+    <div id="userena-content">
+        <p><h2>Signed out!</h2>
+        <p>{% trans "You have been signed out. Until we meet again." %}</p>
+    </div>
+</div>
+{% endblock %}

@@ -11,13 +11,13 @@ def w_choice(lst):
         n = n - weight
     return item
 
-def show_all(request):
+def show_all(request, demo=False):
     students = Demographics.objects.all()
     students_all = []
     graphs = {'mcasxy': [], 'languages': [], 'iep': [], 'frl': []}
     for student in students:
         # setup data structure to return
-        student_d = {'data': student,'generated': {}, 'tests': {}}
+        student_d = {'data': student, 'generated': {}, 'tests': {}}
 
         # Return diebel test info
         diebels = student.diebels_set.order_by('date').reverse()
@@ -35,14 +35,20 @@ def show_all(request):
         map_math = student.mapmath_set.order_by('date').reverse()
         student_d['tests']['map_math'] = map_math
 
-        # Generate some per-student
-        student_d['generated']['mepa_r'] = random.randint(10,30)
-        student_d['generated']['mepa_w'] = random.randint(10,30)
-        student_d['generated']['afterschool'] = \
-            set( [
-                w_choice([("B&G", 0.5), ("Peabody", 0.05), ("Mystic", 0.15), ("", .30)]),
-                w_choice([("B&G", 0.1), ("Peabody", 0.05), ("Mystic", 0.15), ("", .50)])
-            ])
+        print demo
+        if demo:
+            # Generate values if this is a full-demo
+            student_d['generated']['mepa_r'] = random.randint(10,30)
+            student_d['generated']['mepa_w'] = random.randint(10,30)
+            student_d['generated']['afterschool'] = \
+                set( [
+                    w_choice([("B&G", 0.5), ("Peabody", 0.05), ("Mystic", 0.15), ("", .30)]),
+                    w_choice([("B&G", 0.1), ("Peabody", 0.05), ("Mystic", 0.15), ("", .50)])
+                ])
+
+            # Values that still need to be randomly generated
+            student_d['generated']['tardies'] = w_choice([(0, 0.3), (1, 0.3), (2, 0.2), (3, 0.2), (4, 0.2), (5, 0.2), (6, 0.1), (7, 0.1), (8, 0.1), (9, 0.1)])
+            student_d['generated']['ward'] = w_choice([(0, 0.1), (1, 0.1), (2, 0.1), (3, 0.1), (4, 0.1), (5, 0.1), (6, 0.1), (7, 0.1)])
 
         ## Generate graph data
         # MCAS ela vs math scores
@@ -89,15 +95,12 @@ def show_all(request):
             frl_list[status] = 1
     graphs['frl'] = frl_list
 
-    ## Values that still need to be randomly generated
-    values = {}
-    values['tardies'] = [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 4, 5, 9]
-    values['ward'] = [0, 1, 2, 3, 4, 5, 6, 7]
 
-    return render_to_response('student_list.html', {
-        'students': students, 
-        'students_all': students_all, 
-        'generated_values': values, 
-        'graphs': graphs, 
-        'frl_options': ['Reduced Lunch', 'Free Lunch', 'Not Eligible']
-        })
+    all_values = {
+        'students': students,
+        'students_all': students_all,
+        'graphs': graphs,
+        'frl_options': ['Reduced Lunch', 'Free Lunch', 'Not Eligible'],
+        'demo': demo,
+        }
+    return render_to_response('student_list.html', all_values)

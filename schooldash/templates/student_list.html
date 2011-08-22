@@ -25,6 +25,7 @@
     $(".tablesorter").tablesorter();
     // Colorize the background of the attendance cell based on the att %
     $("table tr").each( function() {
+    {% if demo %}
       // Attendance //
       // Find the attendance value, and double the variance (100 +- 10 > 50 +- 10)
       var column_4 = $(this).find('td').eq(4);
@@ -51,9 +52,33 @@
       var column_12 = $(this).find('td').eq(12);
       var color = $.xcolor.gradientlevel('#F70207', '#02CF02', column_12.text() - 150, 100);
       $(column_12).css("background", color);
+    {% else %}
+      // Attendance //
+      // Find the attendance value, and double the variance (100 +- 10 > 50 +- 10)
+      var column_4 = $(this).find('td').eq(4);
+      // Take that value 1-50, and color the result
+      var color = $.xcolor.gradientlevel('#F70207', '#02CF02', column_4.text() - 50 , 50);
+      $(column_4).css("background", color);
+      // MCAS Math //
+      var column_9 = $(this).find('td').eq(8);
+      var color = $.xcolor.gradientlevel('#F70207', '#02CF02', column_9.text() - 200, 80);
+      $(column_9).css("background", color);
+      // MCAS ELA //
+      var column_10 = $(this).find('td').eq(9);
+      var color = $.xcolor.gradientlevel('#F70207', '#02CF02', column_10.text() - 200, 80);
+      $(column_10).css("background", color);
+      // MAP Lang //
+      var column_11 = $(this).find('td').eq(10);
+      var color = $.xcolor.gradientlevel('#F70207', '#02CF02', column_11.text() - 150, 100);
+      $(column_11).css("background", color);
+      // MAP Math //
+      var column_12 = $(this).find('td').eq(11);
+      var color = $.xcolor.gradientlevel('#F70207', '#02CF02', column_12.text() - 150, 100);
+      $(column_12).css("background", color);
+    {% endif %}
 
       });
-    }
+      }
   );
 
   </script>
@@ -71,7 +96,9 @@
       <th><span title="Years student has been at the Healey">Y&nbsp@&nbspH</span></th>
       <th>Room</th>
       <th><span title="Days Absent this Quarter">Abs</span></th>
-      <th><span title="Generated Data: Days Tardy this Quarter">Tardy</span></th>
+      {% if demo %}
+        <th><span title="Generated Data: Days Tardy this Quarter">Tardy</span></th>
+      {% endif %}
       <th><span title="Language spoken in the home">Language</span></th>
       <th><span title="English Language Fluency">Fluency</span></th>
       <th> <span title="Test: Dynamic Indicators of Basic Early Literacy Skills">
@@ -81,13 +108,15 @@
         MCAS&nbspMath
       </span> </th>
       <th> <span title="Change since the last time the test was taken">
-        MCA&nbspELA
+        MCAS&nbspELA
       </span> </th>
       <th> MAP Lang </th>
       <th> MAP Math </th>
-      <th><span title="Where the student lives">
-        Ward
-      </span></th>
+      {% if demo %}
+        <th><span title="Where the student lives">
+          Ward
+        </span></th>
+      {% endif %}
       <th><span title="Free/Reduced Lunch">
         FRL
       </span></th>
@@ -97,9 +126,11 @@
       <th> <span title="Massachusetts English Proficiency Assessment">
         MEPA
       </th>
-      <th class='left'> <span title="What afterschool programs?">
-        Afterschool
-      </span> </th>
+      {% if demo %}
+        <th class='left'> <span title="What afterschool programs?">
+          Afterschool
+        </span> </th>
+      {% endif %}
     </tr></thead>
     <tbody>
       {% for student in students_all %}
@@ -122,13 +153,13 @@
           ">
           {{ student.data.attendance }}
         </td>
-        <td class="
-          {% if student.tardy > 9 %} warn {% endif %}
-          ">
-          <span title="Randomly generated data.">
-          {{ generated_values.tardies|random }}
-          </span>
-        </td>
+        {% if demo %}
+          <td class=" ">
+            <span title="Randomly generated data.">
+                {{ student.generated.tardies }}
+            </span>
+          </td>
+        {% endif %}
         <td class="
             {% if student.data.home_lang == 'Spanish' %}          teal  {% endif %}
             {% if student.data.home_lang == 'Portuguese' %}       dblue {% endif %}
@@ -180,7 +211,9 @@
         </td>
 
         {# Ward #}
-        <td>{{ generated_values.ward|random }}</td>
+        {% if demo %}
+          <td><span title="Randomly generated data">{{ student.generated.ward }}</span></td>
+        {% endif %}
 
         {# FRL #}
         <td>
@@ -221,37 +254,40 @@
         </td>
 
         {# MEPA #}
-        {# TODO: generate fake MEPA data #}
-        <td class="
-        {% if student.data.lang_level == "Fluent" %}
-          ">
-        {% else %}
-        <!-- if Ell, MEPA -->
+        {% if demo %}
+          <td class="
+          {% if student.data.lang_level == "Fluent" %}
+            ">
+          {% else %}
+          <!-- if Ell, MEPA -->
+              {% if student.generated.mepa_r %}
+                {% if student.generated.mepa_r < 11 %} warn {% endif %}
+                {% if student.generated.mepa_w < 11 %} warn {% endif %}
+              {% endif %}
+            ">
             {% if student.generated.mepa_r %}
-              {% if student.generated.mepa_r < 11 %} warn {% endif %}
-              {% if student.generated.mepa_w < 11 %} warn {% endif %}
+              <span title="Randomly generated data: MEPA Reading Score of {{ student.generated.mepa_r }} / 30">
+                R{{ student.generated.mepa_r }}
+              </span>
+               /
+              <span title="Randomly generated data: MEPA Writing Score of {{ student.generated.mepa_w }} / 30">
+                W{{ student.generated.mepa_w }}
+              </span>
             {% endif %}
-          ">
-          {% if student.generated.mepa_r %}
-            <span title="Randomly generated data: MEPA Reading Score of {{ student.generated.mepa_r }} / 30">
-              R{{ student.generated.mepa_r }}
-            </span>
-             /
-            <span title="Randomly generated data: MEPA Writing Score of {{ student.generated.mepa_w }} / 30">
-              W{{ student.generated.mepa_w }}
-            </span>
           {% endif %}
+          </td>
         {% endif %}
-        </td>
 
         {# Afterschool programs #}
-        <td class='left'>
-          <span title="Randomly generated data.">
-          {% for program in student.generated.afterschool %}
-            {{ program }}
-          {% endfor %}
-          </span>
-        </td>
+        {% if demo %}
+          <td class='left'>
+            <span title="Randomly generated data.">
+            {% for program in student.generated.afterschool %}
+              {{ program }}
+            {% endfor %}
+            </span>
+          </td>
+        {% endif %}
 
       </tr>
     {% endfor %}

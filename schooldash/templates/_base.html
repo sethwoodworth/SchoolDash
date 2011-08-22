@@ -25,12 +25,12 @@
     <div id='tagline'>At-a-glance education information</div>
     <ul id="navigation">
       {% if user and not user.is_anonymous %}
-        <li>Username!</li>
-        <li>logout</li>
+        <li>{{ user }}</li>
+        <li><a href="/accounts/logout">logout</a></li>
       {% else %}
-        <li><a href="">login</a></li>
-        <li><a href="">about</a></li>
-        <li><a href="">help</a></li>
+        <li><a href="/accounts/login">login</a></li>
+        <li><a href="/about">about</a></li>
+        <li><a href="/help">help</a></li>
       {% endif %}
     </ul><!-- #user_nav -->
     <h2>{% block school %}Arthur D. Healey School{% endblock %}</h2>

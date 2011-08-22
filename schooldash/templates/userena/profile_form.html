@@ -1,0 +1,87 @@
+{% extends '_base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Account setup" %} - {% endblock %}
+
+{% block content_title %}<h2>{% blocktrans with profile.user.username as username %}Account &raquo; {{ username }}{% endblocktrans %}</h2>{% endblock %}
+
+{% block content %}
+<div id="box-nav" align="center" >
+<ul >
+		<li class="first"><a href="{% url userena_profile_detail user.username %}"><span>{% trans "View profile" %}</span></a></li>
+		<li class="selected"><a href="{% url userena_profile_edit user.username %}">{% trans "Edit profile" %}</a></li>
+		<li><a href="{% url userena_password_change user.username %}">{% trans "Change password" %}</a></li>
+		<li class="last"><a href="{% url userena_email_change user.username %}">{% trans "Change email" %}</a></li>
+</ul>
+</div>
+<div id="userena-content-wrapper">
+    <div id="userena-content">
+		<p><h2>Edit Profile</h2>
+		<p>
+        <form action="" enctype="multipart/form-data" method="post">
+          {% csrf_token %}
+		
+		<div class="fieldWrapper">
+							<div class="formlabel">
+					<label for="name">First Name</label>
+							</div>
+							<div class="formfield">
+					{{ form.non_field_errors}}
+					{{ form.first_name}}
+					{{ form.first_name.errors }}
+					</div>
+				</div><br>
+		<div class="fieldWrapper">
+							<div class="formlabel">
+					<label for="name">Last Name</label>
+							</div>
+							<div class="formfield">
+					{{ form.last_name}}
+					{{ form.last_name.errors }}
+					</div>
+				</div><br>
+		<div class="fieldWrapper">
+							<div class="formlabel">
+					<label for="name">Personal Homepage</label>
+							</div>
+							<div class="formfield">
+					{{ form.personal_homepage}}
+					{{ form.personal_homepage.errors }}
+					</div>
+				</div><br>
+		<div class="fieldWrapper">
+							<div class="formlabel">
+					<label for="name">GitHub Username</label>
+							</div>
+							<div class="formfield">
+					{{ form.github_username}}
+					{{ form.github_username.errors }}
+					</div>
+				</div><br>
+		<div class="fieldWrapper">
+							<div class="formlabel">
+					<label for="name">Location</label>
+							</div>
+							<div class="formfield">
+					{{ form.location}}
+					{{ form.location.errors }}
+					</div>
+				</div><br>
+		<div class="fieldWrapper description">
+          <div class="formlabel">
+		    <label for="description">About Me</label>
+          </div>
+          <div class="formfield">
+		    {{ form.about_me}}
+		    {{ form.about_me.errors }}
+		  </div>
+	  </div>
+					<input type="hidden" name="privacy" id="id_privacy" value="open">
+					{{form.errors}}
+					<p>
+					<p>
+          <input type="submit" value="{% trans "Save changes" %}" />
+        </form>
+    </div>
+</div>
+{% endblock %}

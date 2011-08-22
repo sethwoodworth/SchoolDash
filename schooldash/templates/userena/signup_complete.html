@@ -1,0 +1,17 @@
+{% extends '_base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Signup almost done!" %}{% endblock %}
+
+{% block content_title %}<h2>{% trans "Signup" %}</h2>{% endblock %}
+
+{% block content %}
+<div id="userena-content-wrapper">
+    <div id="userena-content">
+        <p>{% trans "Thank you for signing up with us!" %}</p>
+        <p>{% blocktrans %}You have been send an e-mail with an activation link to the supplied email.{% endblocktrans %}</p>
+        <p>You should receive this very soon. If you don't, remember to check your 'Spam' folder.</p>
+        <p>{% blocktrans %}We will store your signup information for {{ userena_activation_days }} days on our server. {% endblocktrans %}</p>
+    </div>
+</div>
+{% endblock %}
