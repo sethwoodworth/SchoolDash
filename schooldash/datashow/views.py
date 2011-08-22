@@ -29,6 +29,12 @@ def show_all(request):
         mcas_math = student.mcasmath_set.order_by('date').reverse()
         student_d['tests']['math'] = mcas_math
 
+        # Return MAP test data
+        map_lang = student.maplang_set.order_by('date').reverse()
+        student_d['tests']['map_lang'] = map_lang
+        map_math = student.mapmath_set.order_by('date').reverse()
+        student_d['tests']['map_math'] = map_math
+
         # Generate some per-student
         student_d['generated']['mepa_r'] = random.randint(10,30)
         student_d['generated']['mepa_w'] = random.randint(10,30)

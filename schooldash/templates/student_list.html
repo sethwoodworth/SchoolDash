@@ -4,23 +4,57 @@
 {% block title %}All Students{% endblock %}
 
 {% block javascript_extra %}
+<!-- local javascript -->
+  <!-- sort tables by their contents, jquery plugin -->
   <script src="/static/js/jquery.tablesorter.min.js" language="javascript" type="text/javascript"></script>
+  <!-- graph student data -->
   <script src="/static/js/jquery.jqplot.min.js" language="javascript" type="text/javascript" ></script>
   <script src="/static/js/plugins/jqplot.canvasTextRenderer.min.js" language="javascript" type="text/javascript" ></script>
   <script src="/static/js/plugins/jqplot.canvasAxisLabelRenderer.min.js" language="javascript" type="text/javascript" ></script>
+
+  <!-- jquery color operations -->
   <script src="/static/js/jquery.xcolor.js" language="javascript" type="text/javascript" ></script>
+
+  {#TODO: The way I should do this, is pass columnN, min, max to a generator, create one loop over the tr's and change the columnNs #}
   <script type="text/javascript">
+  function shade_column(column, min, max){
+
+  };
   $(document).ready(function() {
     // Turn on the table sorting function
     $(".tablesorter").tablesorter();
     // Colorize the background of the attendance cell based on the att %
     $("table tr").each( function() {
-      var att_x = $(this).find('td').eq(3).text();
-      var att_c = $.xcolor.gradientlevel('#F70207', '#02CF02', att_x, 100);
-      $(this).find('td').eq(3).css("background", att_c);
+      // Attendance //
+      // Find the attendance value, and double the variance (100 +- 10 > 50 +- 10)
+      var column_4 = $(this).find('td').eq(4);
+      // Take that value 1-50, and color the result
+      var color = $.xcolor.gradientlevel('#F70207', '#02CF02', column_4.text() - 50 , 50);
+      $(column_4).css("background", color);
+      // Tardies //
+      var column_5 = $(this).find('td').eq(5);
+      var color = $.xcolor.gradientlevel('#02CF02', '#F70207', column_5.text() , 10);
+      $(column_5).css("background", color);
+      // MCAS Math //
+      var column_9 = $(this).find('td').eq(9);
+      var color = $.xcolor.gradientlevel('#F70207', '#02CF02', column_9.text() - 200, 80);
+      $(column_9).css("background", color);
+      // MCAS ELA //
+      var column_10 = $(this).find('td').eq(10);
+      var color = $.xcolor.gradientlevel('#F70207', '#02CF02', column_10.text() - 200, 80);
+      $(column_10).css("background", color);
+      // MAP Lang //
+      var column_11 = $(this).find('td').eq(11);
+      var color = $.xcolor.gradientlevel('#F70207', '#02CF02', column_11.text() - 150, 100);
+      $(column_11).css("background", color);
+      // MAP Math //
+      var column_12 = $(this).find('td').eq(12);
+      var color = $.xcolor.gradientlevel('#F70207', '#02CF02', column_12.text() - 150, 100);
+      $(column_12).css("background", color);
+
       });
     }
-  ); 
+  );
 
   </script>
 
@@ -34,12 +68,12 @@
       <th class='left'><span title="Student's full name, and gender">Student Name</span></th>
       {#<th><span title="Gender">G</span></th>#}
       <th>Grade</th>
-      <th>Homeroom</th>
+      <th><span title="Years student has been at the Healey">Y&nbsp@&nbspH</span></th>
+      <th>Room</th>
       <th><span title="Days Absent this Quarter">Abs</span></th>
       <th><span title="Generated Data: Days Tardy this Quarter">Tardy</span></th>
       <th><span title="Language spoken in the home">Language</span></th>
       <th><span title="English Language Fluency">Fluency</span></th>
-      <th><span title="Years student has been at the Healey">Y&nbsp@&nbspH</span></th>
       <th> <span title="Test: Dynamic Indicators of Basic Early Literacy Skills">
           DIEBELS
       </span> </th>
@@ -49,6 +83,8 @@
       <th> <span title="Change since the last time the test was taken">
         MCA&nbspELA
       </span> </th>
+      <th> MAP Lang </th>
+      <th> MAP Math </th>
       <th><span title="Where the student lives">
         Ward
       </span></th>
@@ -74,6 +110,12 @@
           {% endif %}
         </td>
         <td>{{ student.data.grade_level }}</td>
+        <td> <span
+          title="Has been at the Healey for {{ student.data.years_at }} years.  Enrolled {{ student.data.entry_date }} {% if student.data.exit_date %} Withdrawn {{ student.data.exit_date }} with code {{ student.data.widrawl }} {% endif %}"
+          >
+              {{ student.data.years_at }}
+          </span>
+        </td>
         <td>{{ student.data.homeroom }}</td>
         <td class="
           {% if student.data.attendance > 9 %} warn {% endif %}
@@ -93,36 +135,48 @@
             {% if student.data.home_lang == 'English' %}          purp  {% endif %}
             {% if student.data.home_lang == 'Creole(Haitian)' %}  brown {% endif %}
             ">
-          {{ student.data.home_lang }}
+          {% if student.data.home_lang == 'Creole(Haitian)' %}
+            Hatian
+          {% else %}
+            {% if student.data.home_lang == 'Punjabi / Panjabi' %}
+              Punjabi
+            {% else %}
+              {{ student.data.home_lang }}
+            {% endif %}
+          {% endif %}
         </td>
         {# Language Level #}
         {# TODO: Provide codes for FLEP levels #}
         <td class=" " > {{ student.data.lang_level }} </td>
-        <td> <span 
-          title="Has been at the Healey for {{ student.data.years_at }} years.  Enrolled {{ student.data.entry_date }} {% if student.data.exit_date %} Withdrawn {{ student.data.exit_date }} with code {{ student.data.widrawl }} {% endif %}"
-          >
-              {{ student.data.years_at }}
-          </span>
-        </td>
         <td> {# DIEBELS test #}
           {% if student.tests.diebels %}
-          <span title="2 most recent DIEBELS test results {{ student.tests.diebels.1.result }} to {{ student.tests.diebels.0.result }}">
-          {{ student.tests.diebels.1.result|first }} > {{ student.tests.diebels.0.result|first }}
-          </span>
+            <span title="Previous DIEBELS test results {{ student.tests.diebels.1.result }}">
+              {{ student.tests.diebels.0.result|first }}
+            </span>
           {% endif %}
         </td>
         {# MCAS Math scores #}
         <td class=" ">
-          {{ student.tests.math.0.raw_score }}
-          {% if student.tests.math.1.raw_score %}
-            ( {{ student.tests.math.1.raw_score }} )
+          {% if student.tests.math.0.raw_score != 'None' %}
+            {{ student.tests.math.0.raw_score }}
           {% endif %}
-
         </td>
 
         {# MCAS Reading scores #}
         <td class=" ">
-          {{ student.tests.ela.0.raw_score }}
+          {% if student.tests.ela.0.raw_score != 'None' %}
+            {{ student.tests.ela.0.raw_score }}
+          {% endif %}
+        </td>
+
+        {# Test: MAP Language #}
+        <td class="">
+          {{ student.tests.map_lang.0.score }}
+        </td>
+
+        {# Test: MAP Math #}
+        <td class="">
+          {{ student.tests.map_math.0.score }}
         </td>
 
         {# Ward #}
@@ -208,7 +262,7 @@
 <script type="text/javascript">
 
     mcasd = [
-      { data: 
+      { data:
         {% autoescape off %}
             {{ graphs.mcasxy }}
         {% endautoescape %}
