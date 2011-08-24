@@ -26,8 +26,11 @@ def show_all(request, demo=False):
     up = UserProfile.objects.filter(user=request.user).all()[0]
     if up.homeroom == 'admin':
         students = Demographics.objects.all()
-    else:
+    elif up.homeroom:
         students = Demographics.objects.filter(homeroom=up.homeroom).all()
+    else:
+        return render(request, 'error.html',
+            {'error': "Sorry, no UserProfile has been created for this user, or your homeroom is not set. Please contact your admin for assistance."})
 
     students_all = []
     graphs = {'mcasxy': [], 'languages': [], 'iep': [], 'frl': []}
@@ -35,9 +38,9 @@ def show_all(request, demo=False):
         # setup data structure to return
         student_d = {'data': student, 'generated': {}, 'tests': {}}
 
-        # Return diebel test info
-        diebels = student.diebels_set.order_by('date').reverse()
-        student_d['tests']['diebels'] = diebels
+        # Return DIBELS test info
+        dibels = student.dibels_set.order_by('date').reverse()
+        student_d['tests']['dibels'] = dibels
         # Return mcas_ela test info
         mcas_ela = student.mcasela_set.order_by('date').reverse()
         student_d['tests']['ela'] = mcas_ela
