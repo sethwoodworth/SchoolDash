@@ -34,9 +34,9 @@ class Demographics(models.Model):
     def __unicode__(self):
         return str(self.id1) + " " + self.lname + ", "  + self.fname + " " + str(self.id)
 
-class DIEBELS(models.Model):
+class DIBELS(models.Model):
     """
-    DIEBELS test table representation
+    DIBELS test table representation
     [0] name
     [1] id1
     [2] id2
@@ -47,7 +47,7 @@ class DIEBELS(models.Model):
     [7] Benchmark | Strategic | Intensive
     """
     f_id1 = models.ForeignKey(Demographics) #[1]
-    test_id = models.TextField(default='diebels')
+    test_id = models.TextField(default='DIBELS')
     test_name = models.TextField()  #[3]
     date = models.TextField()       #[4]
     result = models.TextField()     #[7]

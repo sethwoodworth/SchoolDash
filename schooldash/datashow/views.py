@@ -1,6 +1,10 @@
 import random
-from django.shortcuts import render_to_response
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
 from dataload.models import *
+from userinfo.models import UserProfile
 
 ### Utilities ###
 def w_choice(lst):
@@ -11,8 +15,20 @@ def w_choice(lst):
         n = n - weight
     return item
 
+@login_required
 def show_all(request, demo=False):
-    students = Demographics.objects.all()
+    """
+    Return the students a user has permisison to view, format the data, and
+    render it. Optionally you can turn on "demo" which enables sample columns
+    with randomly generated data.
+    """
+
+    up = UserProfile.objects.filter(user=request.user).all()[0]
+    if up.homeroom == 'admin':
+        students = Demographics.objects.all()
+    else:
+        students = Demographics.objects.filter(homeroom=up.homeroom).all()
+
     students_all = []
     graphs = {'mcasxy': [], 'languages': [], 'iep': [], 'frl': []}
     for student in students:
@@ -35,7 +51,6 @@ def show_all(request, demo=False):
         map_math = student.mapmath_set.order_by('date').reverse()
         student_d['tests']['map_math'] = map_math
 
-        print demo
         if demo:
             # Generate values if this is a full-demo
             student_d['generated']['mepa_r'] = random.randint(10,30)
@@ -103,4 +118,4 @@ def show_all(request, demo=False):
         'frl_options': ['Reduced Lunch', 'Free Lunch', 'Not Eligible'],
         'demo': demo,
         }
-    return render_to_response('student_list.html', all_values)
+    return render(request, 'student_list.html', all_values)

@@ -4,7 +4,7 @@ import decimal
 from django.shortcuts import redirect
 from django.conf import settings
 
-from dataload.models import Demographics, DIEBELS, Mcasela, Mcasmath, Maplang, Mapmath
+from dataload.models import Demographics, DIBELS, Mcasela, Mcasmath, Maplang, Mapmath
 
 
 def load_demographics(request):
@@ -24,7 +24,7 @@ def load_demographics(request):
     #! Apparently this doesn't work. Hacking this back inline for now
     # TODO: Fixme ^^
     Demographics.objects.all().delete()
-    DIEBELS.objects.all().delete()
+    DIBELS.objects.all().delete()
 
     ## Load the Demographics table
     # ::See dataload.models.Demographcis for documentation
@@ -93,7 +93,7 @@ def load_demographics(request):
             reader = csv.reader(file)
             for test in reader:
                 demo = Demographics.objects.filter(id1=test[1]).all()[0]
-                dd = DIEBELS()
+                dd = DIBELS()
                 dd.f_id1 = demo
                 dd.test_name = test[3]
                 dd.date = test[4]
@@ -174,7 +174,7 @@ def load_demographics(request):
                 mmath.score             = test[7]
                 mmath.save()
 
-    return redirect('/real')
+    return redirect('/')
 
 class utility():
     """
@@ -183,4 +183,4 @@ class utility():
     def drop_tables():
         ## Clean out old tables and reimport from scratch
         Demographics.objects.all().delete()
-        DIEBELS.objects.all().delete()
+        DIBELS.objects.all().delete()

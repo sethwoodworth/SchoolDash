@@ -102,7 +102,7 @@
       <th><span title="Language spoken in the home">Language</span></th>
       <th><span title="English Language Fluency">Fluency</span></th>
       <th> <span title="Test: Dynamic Indicators of Basic Early Literacy Skills">
-          DIEBELS
+          DIBELS
       </span> </th>
       <th> <span title="Change since the last time the test was taken">
         MCAS&nbspMath
@@ -179,10 +179,10 @@
         {# Language Level #}
         {# TODO: Provide codes for FLEP levels #}
         <td class=" " > {{ student.data.lang_level }} </td>
-        <td> {# DIEBELS test #}
-          {% if student.tests.diebels %}
-            <span title="Previous DIEBELS test results {{ student.tests.diebels.1.result }}">
-              {{ student.tests.diebels.0.result|first }}
+        <td> {# DIBELS test #}
+          {% if student.tests.dibels %}
+            <span title="Previous DIBELS test results {{ student.tests.dibels.1.result }}">
+              {{ student.tests.dibels.0.result|first }}
             </span>
           {% endif %}
         </td>
