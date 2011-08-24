@@ -75,8 +75,8 @@ TEMPLATE_DIRS = (
 
 AUTH_PROFILE_MODULE = 'userinfo.UserProfile'
 ANONYMOUS_USER_ID   = -1
-LOGIN_REDIRECT_URL  = '/dash/'
-USERENA_SIGNIN_REDIRECT_URL = '/dash/'
+LOGIN_REDIRECT_URL  = '/'
+USERENA_SIGNIN_REDIRECT_URL = '/'
 LOGIN_URL           = '/accounts/signin/'
 LOGOUT_URL          = '/accounts/signout/'
 USERENA_DEFAULT_PRIVACY = 'closed'
