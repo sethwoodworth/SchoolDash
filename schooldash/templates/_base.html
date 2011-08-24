@@ -24,11 +24,11 @@
     <h1><a href='/' title="SchoolDash Home">SchoolDash</a></h1>
     <div id='tagline'>At-a-glance education information</div>
     <ul id="navigation">
-      {% if user and not user.is_anonymous %}
-        <li>{{ user }}</li>
-        <li><a href="/accounts/logout">logout</a></li>
+      {% if user.is_authenticated %}
+        <li><a href="">{{ user }}</a></li>
+        <li><a href="/accounts/signout">signout</a></li>
       {% else %}
-        <li><a href="/accounts/login">login</a></li>
+        <li><a href="/accounts/signin">signin</a></li>
         <li><a href="/about">about</a></li>
         <li><a href="/help">help</a></li>
       {% endif %}

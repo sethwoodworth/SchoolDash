@@ -15,6 +15,8 @@ Contents:   Master Formatting
               Formatting Navigation
             Style
               Container
+              Contents
+            Userena
 
 Color Guide:
   Header text:    #F78F1E
@@ -212,7 +214,7 @@ th.headerSortUp {
       background-image: url(/static/imgs/asc.gif);
       background-color: #D8E9DA;
   }
-th.headerSortDown{
+th.headerSortDown {
       background-image: url(/static/imgs/desc.gif);
       background-color: #E9E8D8;
   }
@@ -222,4 +224,13 @@ th.header {
   }
 .left {
       text-align: left;
+  }
+
+
+/* --[ Userena ]---------- */
+
+/* --[ Signin ]---------- */
+#userena-content-wrapper {
+      width:    300px;
+      margin:   auto;
   }
