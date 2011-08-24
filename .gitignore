@@ -1,7 +1,7 @@
 # Ignore these filetypes
 *.pyc
 *.swp
-*.sqlite
+*.sqlite3
 
 # Ignore these folder
 data/*
