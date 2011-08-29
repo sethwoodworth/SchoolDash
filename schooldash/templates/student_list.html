@@ -18,11 +18,25 @@
   {#TODO: The way I should do this, is pass columnN, min, max to a generator, create one loop over the tr's and change the columnNs #}
   <script type="text/javascript">
   function shade_column(column, min, max){
-
   };
   $(document).ready(function() {
     // Turn on the table sorting function
     $(".tablesorter").tablesorter();
+
+    // *****************
+    // Load table data into json data array for jqplot graphing
+    // inspiration from rmurphey:
+    // http://blog.rebeccamurphey.com/2007/12/17/graph-table-data-jquery-flot/
+    // *****************
+    var $table = $("table");
+    var tableData = new Array();
+    var $rows = $("table tr");
+    // iterate over rows
+    for (i=1;i<=$rows.length;i++) {
+      var rowData = new Array();
+      $datarow = $rows.eq(i); // start at one, grab row from list of rows
+    }
+
     // Colorize the background of the attendance cell based on the att %
     $("table tr").each( function() {
     {% if demo %}
@@ -86,6 +100,35 @@
 {% endblock %}
 
 {% block content %}
+<div id="lightbox">
+  <script type="text/javascript">
+    function graph_frl_map() {
+      $('#lightbox').css('display', 'block');
+
+      var tableData = new Array();
+      //var $rows = $("table tr");
+
+      $("table tr").each( function() {
+        {% if demo %}
+        // FIXME: graphs will not work on demo
+        var frl = $(this).('td').eq(13).text()
+        var map_math = $(this).('td').eq(11).text()
+        {% else %}
+        var frl = $(this).('td').eq(13).text()
+        var map_math = $(this).('td').eq(11).text()
+        {% endif %}
+
+      };
+      // iterate over rows
+      for (i=1;i<=$rows.length;i++) {
+        var rowData = new Array();
+        $datarow = $rows.eq(i); // start at one, grab row from list of rows
+      }
+    };
+  </script>
+  <div id="graph"></div>
+</div>
+  <a href="#frl" onclick="graph_frl_map()">Graph FRL</a>
   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est</p>
   <table class="tablesorter">
   {# TODO: make values sort non alphabitically Language should sort: Fluent, Limited, FLEP, FLEP-Optout #}
@@ -223,7 +266,7 @@
         {% if student.data.frl == "Free Lunch" %}
           Free
         {% endif %}
-        {% if student.data.frl == "" %}
+        {% if student.data.frl == "Reduced Lunch" %}
           Reduced
         {% endif %}
         </td>
@@ -293,7 +336,6 @@
     {% endfor %}
   </tbody>
 </table>
-{% comment %}
 <!-- Start graph section -->
 <script type="text/javascript">
 
@@ -450,7 +492,6 @@
   <!-- End graph section -->
 </div> <!-- graphs -->
 <div class="jqplot-yaxis-label"></div>
-{% endcomment %}
 
 
 {% endblock %}
