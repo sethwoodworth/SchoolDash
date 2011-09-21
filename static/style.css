@@ -231,11 +231,11 @@ th.header {
       z-index:      1;
       position:     absolute;
       width:        1000px;
-      height:       600px;
+      height:       610px;
       background:   white;
       margin-left:  100px;
       margin-right: 100px;
-      display:      none;
+      left:         -10000px;
   }
 
 

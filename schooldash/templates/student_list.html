@@ -7,10 +7,14 @@
 <!-- local javascript -->
   <!-- sort tables by their contents, jquery plugin -->
   <script src="/static/js/jquery.tablesorter.min.js" language="javascript" type="text/javascript"></script>
+
   <!-- graph student data -->
   <script src="/static/js/jquery.jqplot.min.js" language="javascript" type="text/javascript" ></script>
   <script src="/static/js/plugins/jqplot.canvasTextRenderer.min.js" language="javascript" type="text/javascript" ></script>
   <script src="/static/js/plugins/jqplot.canvasAxisLabelRenderer.min.js" language="javascript" type="text/javascript" ></script>
+
+  <!-- <script src="/static/js/flot/jquery.flot.min.js" language="javascript" type="text/javascript" ></script> -->
+  <script src="/static/js/flot/jquery.flot.js" language="javascript" type="text/javascript" ></script>
 
   <!-- jquery color operations -->
   <script src="/static/js/jquery.xcolor.js" language="javascript" type="text/javascript" ></script>
@@ -23,19 +27,6 @@
     // Turn on the table sorting function
     $(".tablesorter").tablesorter();
 
-    // *****************
-    // Load table data into json data array for jqplot graphing
-    // inspiration from rmurphey:
-    // http://blog.rebeccamurphey.com/2007/12/17/graph-table-data-jquery-flot/
-    // *****************
-    var $table = $("table");
-    var tableData = new Array();
-    var $rows = $("table tr");
-    // iterate over rows
-    for (i=1;i<=$rows.length;i++) {
-      var rowData = new Array();
-      $datarow = $rows.eq(i); // start at one, grab row from list of rows
-    }
 
     // Colorize the background of the attendance cell based on the att %
     $("table tr").each( function() {
@@ -103,33 +94,49 @@
 <div id="lightbox">
   <script type="text/javascript">
     function graph_frl_map() {
-      $('#lightbox').css('display', 'block');
+      // TODO: reimplement with jQuery .show()
+      $('#lightbox').css('left', '0');
 
-      var tableData = new Array();
+      tableData = new Object();
+      tableSeries = new Array();
       //var $rows = $("table tr");
 
       $("table tr").each( function() {
-        {% if demo %}
         // FIXME: graphs will not work on demo
-        var frl = $(this).('td').eq(13).text()
-        var map_math = $(this).('td').eq(11).text()
-        {% else %}
-        var frl = $(this).('td').eq(13).text()
-        var map_math = $(this).('td').eq(11).text()
-        {% endif %}
+        var name = $(this).find('td').eq(0).text().trim();
+        var frl = $(this).find('td').eq(12).text().trim();
+        var map_math = $(this).find('td').eq(11).text().trim();
+        tableData[name] = [frl, map_math];
+        frlNumber = null;
+        if (frl == "Free") { frlNumber = 1; };
+        if (frl == "Reduced") { frlNumber = 2; };
+        if (frl == "Not") { frlNumber = 3; };
+        if (frlNumber != null) {
+          tableSeries.push([frlNumber, map_math]);
+          };
+        //var str = name + ' ' + frl + ' ' + map_math;
+        //$('#lightbox').append(str);
+      });
+
+      $.plot($('#graph'), [
+          {
+            data: tableSeries,
+            lines: { show: false },
+            points: { show: true }
+          }
+        ], {
+          xaxis: { min: 0, max: 5 },
+          yaxis: { min: 150, max: 300 }
+      });
 
       };
-      // iterate over rows
-      for (i=1;i<=$rows.length;i++) {
-        var rowData = new Array();
-        $datarow = $rows.eq(i); // start at one, grab row from list of rows
-      }
-    };
   </script>
-  <div id="graph"></div>
+  <div id="graph" style="width:1000px; height:500px"></div>
 </div>
+  <!--
   <a href="#frl" onclick="graph_frl_map()">Graph FRL</a>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est</p>
+  -->
+  <p>This dashboard brings together key data fields to identify students and display their learning. It provides an easily sortable view for teachers and administrators.</p>
   <table class="tablesorter">
   {# TODO: make values sort non alphabitically Language should sort: Fluent, Limited, FLEP, FLEP-Optout #}
     <thead><tr>
@@ -336,6 +343,7 @@
     {% endfor %}
   </tbody>
 </table>
+{% comment %}
 <!-- Start graph section -->
 <script type="text/javascript">
 
@@ -492,6 +500,7 @@
   <!-- End graph section -->
 </div> <!-- graphs -->
 <div class="jqplot-yaxis-label"></div>
+{% endcomment %}
 
 
 {% endblock %}
