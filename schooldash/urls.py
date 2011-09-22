@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.http import HttpResponse # for hacky one-liner
-from django.contrib import admin
-admin.autodiscover()
+#from django.contrib import admin
+#admin.autodiscover()
 
 from django.conf import settings
 

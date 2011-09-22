@@ -64,7 +64,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'schooldash.urls'
+ROOT_URLCONF = os.path.join(os.path.dirname(__file__), 'urls'),
 
 TEMPLATE_DIRS = (
     # Wherever you go, there you are
